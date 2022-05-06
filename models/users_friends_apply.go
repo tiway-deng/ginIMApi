@@ -1,16 +1,30 @@
 package models
 
+import "ginIMApi/packages/setting"
+
 type UsersFriendsApply struct {
 	Model
-	Mobile      string `json:"mobile"`
-	Nickname    string `json:"nickname"`
-	Avatar      string `json:"avatar"`
-	Gender      int    `json:"gender"`
-	Password    string `json:"password"`
-	Motto       string `json:"motto"`
-	Status      int    `json:"status"`
-	Description string `json:"description"`
-	Email       string `json:"email"`
+	UserId   int `json:"user_id"`
+	FriendId int `json:"friend_id"`
+	Remarks  string `json:"remarks"`
+	Status   int    `json:"status"`
 }
 
+func (UsersFriendsApply) TableName() string {
+	return setting.DatabaseSetting.TablePrefix + "users_friends_apply"
+}
 
+func GetUserApplyRecord(userId interface{}, friendId interface{}) UsersFriendsApply {
+	var userFriendApply UsersFriendsApply
+	db.Model(UsersFriendsApply{}).Where("user_id = ? AND friend_id = ?", userId, friendId).Order("id desc").First(&userFriendApply)
+
+	return userFriendApply
+}
+
+func UpdateApplyRecord(id int, remark string) {
+	db.Model(UsersFriendsApply{}).Where("id = ?", id).Updates(map[string]interface{}{"remarks": remark})
+}
+
+func CreateApplyRecord(apply *UsersFriendsApply) {
+	db.Model(UsersFriendsApply{}).Create(&apply)
+}

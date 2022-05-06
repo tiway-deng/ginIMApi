@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"ginIMApi/models"
 	"ginIMApi/packages/utils"
+	_ "ginIMApi/packages/utils"
 	"github.com/gin-gonic/gin"
 	"github.com/gorilla/websocket"
 	"html"

@@ -39,33 +39,31 @@ func GetUserContactList(c *gin.Context) {
 //add user contact
 func AddUserContact(c *gin.Context) {
 	appG := utils.Gin{C: c}
+	json := make(map[string]interface{})
+	_ = c.BindJSON(&json)
 	userId := c.MustGet("user_id")
-
-	var form validators.UserContactAdd
-	c.Bind(&form)
-	valid := validation.Validation{}
-	check, _ := valid.Valid(form)
-	if !check {
-		utils.MarkErrors(valid.Errors)
-		appG.Response(e.INVALID_PARAMS, nil)
-		return
-	}
+	FriendIdStr := strconv.FormatFloat(json["friend_id"].(float64),'f', 0, 64)
 	//添加联系人
-	contactList, _ := contactservice.AddUserContact(userId, form.FriendId, form.Remarks)
+	isSuccess, err := contactservice.AddUserContact(userId.(string), FriendIdStr, json["remarks"].(string))
+	if err != nil {
+		appG.Response(e.ERROR, err)
+	}
 	//添加未读信息
 	cacheApplyFriend := cache.NewApplyFriend()
-	FriendIdStr := strconv.Itoa(form.FriendId)
-	cacheApplyFriend.IncrApplyFriendUnRead(FriendIdStr)
+	_,err = cacheApplyFriend.IncrApplyFriendUnRead(FriendIdStr)
+	if err != nil {
+		appG.Response(e.ERROR, "失败")
+	}
 	//消息通知
 	ws.ApplyFriendMsg(FriendIdStr, map[string]interface{}{
 		"sender":  userId,
 		"receive": FriendIdStr,
 		"type":    1,
 		"status":  1,
-		"remark":  form.Remarks,
+		"remark":  json["remarks"],
 	})
 	//返回数据
-	appG.Response(e.SUCCESS, contactList)
+	appG.Response(e.SUCCESS, isSuccess)
 }
 
 
@@ -83,6 +81,9 @@ func SearchUserContact(c *gin.Context) {
 	}
 	//添加联系人
 	userInfo := contactservice.SearchUserContact(form.Mobile)
+	if (userInfo.ID == 0) {
+		appG.Response(e.INVALID_PARAMS,nil)
+	}
 
 	//返回数据
 	appG.Response(e.SUCCESS, userInfo)

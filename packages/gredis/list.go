@@ -7,7 +7,9 @@ import (
 
 // Set a key/value
 func ListLPush(key string, data interface{}) error {
-	conn := GetConn()
+	conn := RedisConn.Get()
+	defer conn.Close()
+
 	value, err := json.Marshal(data)
 	if err != nil {
 		return err

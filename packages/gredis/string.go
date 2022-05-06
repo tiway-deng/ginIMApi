@@ -7,7 +7,9 @@ import (
 
 // Set a key/value
 func StringSet(key string, data interface{}) error {
-	conn := GetConn()
+	conn := RedisConn.Get()
+	defer conn.Close()
+
 	value, err := json.Marshal(data)
 	if err != nil {
 		return err
@@ -22,7 +24,9 @@ func StringSet(key string, data interface{}) error {
 
 // SET if Not eXists
 func StringSetNX(key string, data interface{}, seconds int) error {
-	conn := GetConn()
+	conn := RedisConn.Get()
+	defer conn.Close()
+
 	value, err := json.Marshal(data)
 	if err != nil {
 		return err
@@ -38,7 +42,9 @@ func StringSetNX(key string, data interface{}, seconds int) error {
 
 //SET key value EXPIRE key seconds
 func StringSetEX(key string, data interface{}, seconds int) error {
-	conn := GetConn()
+	conn := RedisConn.Get()
+	defer conn.Close()
+
 	value, err := json.Marshal(data)
 	if err != nil {
 		return err
@@ -54,7 +60,8 @@ func StringSetEX(key string, data interface{}, seconds int) error {
 
 // Get get a key value
 func StringGet(key string) ([]byte, error) {
-	conn := GetConn()
+	conn := RedisConn.Get()
+	defer conn.Close()
 
 	reply, err := redis.Bytes(conn.Do("GET", key))
 	if err != nil {
@@ -66,7 +73,8 @@ func StringGet(key string) ([]byte, error) {
 
 //incr key
 func StringIncr(key string) error {
-	conn := GetConn()
+	conn := RedisConn.Get()
+	defer conn.Close()
 
 	_, err := conn.Do("INCR", key)
 	if err != nil {
@@ -78,7 +86,8 @@ func StringIncr(key string) error {
 
 //incr key by value
 func StringIncrBy(key string, value int) error {
-	conn := GetConn()
+	conn := RedisConn.Get()
+	defer conn.Close()
 	_, err := conn.Do("INCRBY", key, value)
 	if err != nil {
 		return err
@@ -89,7 +98,8 @@ func StringIncrBy(key string, value int) error {
 
 //DECR key
 func StringDecr(key string) error {
-	conn := GetConn()
+	conn := RedisConn.Get()
+	defer conn.Close()
 	_, err := conn.Do("DECR", key)
 	if err != nil {
 		return err
@@ -100,7 +110,8 @@ func StringDecr(key string) error {
 
 //DECR key by value
 func StringDecrBy(key string, value int) error {
-	conn := GetConn()
+	conn := RedisConn.Get()
+	defer conn.Close()
 
 	_, err := conn.Do("DECRBY", key, value)
 	if err != nil {

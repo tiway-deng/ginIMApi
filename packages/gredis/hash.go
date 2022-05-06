@@ -7,7 +7,8 @@ import (
 
 // Set a  HASH key/value
 func HashSet(key string, field string, data interface{}) error {
-	conn := GetConn()
+	conn := RedisConn.Get()
+	defer conn.Close()
 	value, err := json.Marshal(data)
 	if err != nil {
 		return err
@@ -22,7 +23,8 @@ func HashSet(key string, field string, data interface{}) error {
 
 // Get get a HASH key value
 func HashGet(key string, field string) ([]byte, error) {
-	conn := GetConn()
+	conn := RedisConn.Get()
+	defer conn.Close()
 
 	reply, err := redis.Bytes(conn.Do("HGET", key, field))
 	if err != nil {
@@ -34,12 +36,14 @@ func HashGet(key string, field string) ([]byte, error) {
 
 // Delete delete a HASH kye
 func HashKeyDel(key string) (int, error) {
-	conn := GetConn()
+	conn := RedisConn.Get()
+	defer conn.Close()
 	return redis.Int(conn.Do("HDEL", key))
 }
 
 //incr value by hash key
 func HashIncrBy(key string, field string, value int) (int, error) {
-	conn := GetConn()
+	conn := RedisConn.Get()
+	defer conn.Close()
 	return redis.Int(conn.Do("HINCRBY", key, field, value))
 }

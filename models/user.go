@@ -3,7 +3,6 @@ package models
 import (
 	"ginIMApi/packages/setting"
 	"ginIMApi/validators"
-	"log"
 )
 
 type User struct {
@@ -77,14 +76,12 @@ func GetUserContactList(userId interface{}) []Contact {
 
 	tablePrefix := setting.DatabaseSetting.TablePrefix
 	var contactList []Contact
-	res := db.Raw("SELECT users.id,users.nickname,users.avatar,users.status,users.motto,users.gender,tmp_table.friend_remark from "+tablePrefix+"users users "+
+	db.Raw("SELECT users.id,users.nickname,users.avatar,users.status,users.motto,users.gender,tmp_table.friend_remark from "+tablePrefix+"users users "+
 		"INNER join("+
 		" SELECT id as rid,user2 as uid,user1_remark as friend_remark from "+tablePrefix+"users_friends where user1 = ? and `status` = 1 "+
 		"UNION all"+
 		" SELECT id as rid,user1 as uid,user2_remark as friend_remark from "+tablePrefix+"users_friends where user2 = ? and `status` = 1 "+
 		") tmp_table on tmp_table.uid = users.id", userId, userId).Scan(&contactList)
-
-	log.Println(res)
 
 	return contactList
 }

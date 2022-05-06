@@ -38,10 +38,4 @@ func Setup() error {
 	return nil
 }
 
-//get one conn form pool
-func GetConn() redis.Conn {
-	conn := RedisConn.Get()
-	defer conn.Close()
-	return conn
-}
 

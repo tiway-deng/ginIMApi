@@ -6,13 +6,15 @@ import (
 
 // Delete delete a kye
 func KeyDel(key string) (bool, error) {
-	conn := GetConn()
+	conn := RedisConn.Get()
+	defer conn.Close()
 	return redis.Bool(conn.Do("DEL", key))
 }
 
 // Exists check a key
 func KeyExists(key string) bool {
-	conn := GetConn()
+	conn := RedisConn.Get()
+	defer conn.Close()
 	exists, err := redis.Bool(conn.Do("EXISTS", key))
 	if err != nil {
 		return false
@@ -23,7 +25,8 @@ func KeyExists(key string) bool {
 
 //EXPIRE key seconds
 func KeyExpire(key string, seconds int) bool {
-	conn := GetConn()
+	conn := RedisConn.Get()
+	defer conn.Close()
 	exists, err := redis.Bool(conn.Do("EXPIRE", key, seconds))
 	if err != nil {
 		return false
@@ -34,7 +37,8 @@ func KeyExpire(key string, seconds int) bool {
 
 //EXPIRE key unix timestamp
 func KeyExpireAt(key string, timeStamp int) bool {
-	conn := GetConn()
+	conn := RedisConn.Get()
+	defer conn.Close()
 	exists, err := redis.Bool(conn.Do("EXPIREAT", key, timeStamp))
 	if err != nil {
 		return false
@@ -44,7 +48,8 @@ func KeyExpireAt(key string, timeStamp int) bool {
 }
 
 func KeyAllKeys(key string) ([]byte, error) {
-	conn := GetConn()
+	conn := RedisConn.Get()
+	defer conn.Close()
 
 	reply, err := redis.Bytes(conn.Do("KEYS", key))
 	if err != nil {

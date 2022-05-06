@@ -31,14 +31,14 @@ func InitRouter() *gin.Engine {
 	}
 
 	//jwt 鉴权
-	apiv1.Use(jwt.JWT())
+	apiv1.Use(jwt.JWT()).Use(cors.Cors())
 	{
 		//用户信息
 		users := apiv1.Group("/users")
 		{
 			users.GET("setting", v1.GetUserSetting)
 			users.GET("detail", v1.GetUserDetail)
-			users.POST("search-user", v1.GetUserDetail)
+			users.GET("search-user", v1.GetUserDetail)
 		}
 
 		talk := apiv1.Group("/talk")
@@ -54,7 +54,7 @@ func InitRouter() *gin.Engine {
 		{
 			contacts.GET("list", v1.GetUserContactList)
 			contacts.GET("apply-unread-num", v1.ApplyUnreadNum)
-			contacts.GET("add", v1.AddUserContact)
+			contacts.POST("add", v1.AddUserContact)
 			contacts.GET("search", v1.SearchUserContact)
 			contacts.GET("apply-records", v1.UserContactApplyRecords)
 		}

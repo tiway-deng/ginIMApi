@@ -12,7 +12,7 @@ type User struct {
 }
 
 type UserContactAdd struct {
-	FriendId int `form:"friend_id",valid:"Required; Numeric"`
+	FriendId float64 `form:"friend_id"`
 	Remarks  string `form:"remarks",valid:"Required; MaxSize(50)"`
 }
 
