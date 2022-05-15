@@ -105,3 +105,40 @@ func UserContactApplyRecords(c *gin.Context)  {
 	//返回数据
 	appG.Response(e.SUCCESS, data)
 }
+
+func AcceptUser(c *gin.Context)  {
+	appG := utils.Gin{C: c}
+	userId := c.MustGet("user_id")
+
+	json := make(map[string]interface{})
+	c.BindJSON(&json)
+	//var form validators.AcceptInvitation
+	//c.Bind(&form)
+	//
+	//valid := validation.Validation{}
+	//check, _ := valid.Valid(form)
+	//if !check {
+	//	utils.MarkErrors(valid.Errors)
+	//	appG.Response(e.INVALID_PARAMS, nil)
+	//	return
+	//}
+
+	//添加好友
+	friendId := contactservice.AcceptInvitation(userId,json["apply_id"],json["remarks"].(string))
+	if friendId == 0 {
+		appG.Response(e.INVALID_PARAMS, "处理失败")
+		return
+	}
+	//判断对方是否在线
+	friendIdStr := strconv.Itoa(friendId)
+	ws.ApplyFriendMsg(friendIdStr, map[string]interface{}{
+		"sender":  userId,
+		"receive": friendIdStr,
+		"type":    1,
+		"status":  1,
+		"remark":  "",
+	})
+
+	//返回数据
+	appG.Response(e.SUCCESS, "")
+}

@@ -114,3 +114,15 @@ func addExtraSpaceIfExist(str string) string {
 	}
 	return ""
 }
+
+func TransactionBegin(){
+	db.Begin()
+}
+
+func TransactionRollback(){
+	db.Rollback()
+}
+
+func TransactionCommit(){
+	db.Commit()
+}

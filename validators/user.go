@@ -23,3 +23,5 @@ type UserContactSearch struct {
 type UserSearch struct {
 	UserId int `form:"user_id",valid:"Required; Numeric"`
 }
+
+

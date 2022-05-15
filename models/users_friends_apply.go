@@ -7,10 +7,11 @@ import (
 
 type UsersFriendsApply struct {
 	Model
-	UserId   int    `json:"user_id"`
-	FriendId int    `json:"friend_id"`
-	Remarks  string `json:"remarks"`
-	Status   int    `json:"status"`
+	UserId    int       `json:"user_id"`
+	FriendId  int       `json:"friend_id"`
+	Remarks   string    `json:"remarks"`
+	Status    int       `json:"status"`
+	UpdatedAt time.Time `json:"updated_at"`
 }
 
 type RecordResult struct {
@@ -26,12 +27,12 @@ type RecordResult struct {
 }
 
 func (UsersFriendsApply) TableName() string {
-	return "users_friends_apply"
+	return setting.DatabaseSetting.TablePrefix + "users_friends_apply"
 }
 
 func GetUserApplyRecord(userId interface{}, friendId interface{}) UsersFriendsApply {
 	var userFriendApply UsersFriendsApply
-	db.Model(UsersFriendsApply{}).Where("user_id = ? AND friend_id = ?", userId, friendId).Order("id desc").First(&userFriendApply)
+	db.Model(UsersFriendsApply{}).Where("user_id = ? AND friend_id = ? AND status = 0", userId, friendId).Order("id desc").First(&userFriendApply)
 
 	return userFriendApply
 }
@@ -48,8 +49,12 @@ func UserApplyRecordExist(userId interface{}, friendId interface{}) bool {
 	return exist
 }
 
-func UpdateApplyRecord(id int, remark string) {
-	db.Model(UsersFriendsApply{}).Where("id = ?", id).Updates(map[string]interface{}{"remarks": remark})
+func UpdateApplyRecordRemark(id int, remark string) {
+	db.Model(UsersFriendsApply{}).Where("id = ?", id).Updates(map[string]interface{}{"remarks": remark, "updated_at": time.Now()})
+}
+
+func UpdateApplyRecordStatus(id int, status int) {
+	db.Model(UsersFriendsApply{}).Where("id = ?", id).Updates(map[string]interface{}{"status": status, "updated_at": time.Now()})
 }
 
 func CreateApplyRecord(apply *UsersFriendsApply) {
@@ -64,4 +69,11 @@ func GetUserApply(userId interface{}) []RecordResult {
 		"LEFT JOIN "+tablePrefix+"users as users ON users.id = users_friends_apply.friend_id", userId).Scan(&result)
 
 	return result
+}
+
+func GetUserApplyRecordById(id interface{}) UsersFriendsApply {
+	var userFriendApply UsersFriendsApply
+	db.Where("id = ? ", id).First(&userFriendApply)
+
+	return userFriendApply
 }
