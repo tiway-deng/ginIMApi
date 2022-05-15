@@ -57,6 +57,7 @@ func InitRouter() *gin.Engine {
 			contacts.POST("add", v1.AddUserContact)
 			contacts.GET("search", v1.SearchUserContact)
 			contacts.GET("apply-records", v1.UserContactApplyRecords)
+			contacts.POST("accept-invitation", v1.UserContactApplyRecords)
 		}
 
 		emoticon := apiv1.Group("/emoticon")

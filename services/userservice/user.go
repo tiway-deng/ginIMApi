@@ -14,10 +14,10 @@ func CheckUser(m string, p string) (user models.User, ok bool) {
 		//密码验证
 		md5Pwd := utils.EncodeMD5(p)
 		if user.Password == md5Pwd {
-			return user,true
+			return user, true
 		}
 	}
-	return user,false
+	return user, false
 }
 
 func RegisterUser(u *models.User) (int, error) {
@@ -30,6 +30,10 @@ func RegisterUser(u *models.User) (int, error) {
 	}
 	//密码加密
 	u.Password = utils.EncodeMD5(u.Password)
+	//设置默认头像
+	if len(u.Avatar) == 0 {
+		u.Avatar = "https://im.gzydong.club/public/media/image/avatar/20220126/4c874751ea11575c5ddbc6f6cf91db33_200x200.png"
+	}
 
 	//生成用户信息
 	models.CreatUser(u)
@@ -38,10 +42,7 @@ func RegisterUser(u *models.User) (int, error) {
 }
 
 func UpdateUser(userId interface{}, u validators.User) (userInfo models.User, err error) {
-	userInfo, err = models.UpdateUser(userId,u)
+	userInfo, err = models.UpdateUser(userId, u)
 
-	return userInfo,err
+	return userInfo, err
 }
-
-
-

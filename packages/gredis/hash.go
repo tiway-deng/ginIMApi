@@ -3,6 +3,7 @@ package gredis
 import (
 	"encoding/json"
 	"github.com/gomodule/redigo/redis"
+	"log"
 )
 
 // Set a  HASH key/value
@@ -27,6 +28,7 @@ func HashGet(key string, field string) ([]byte, error) {
 	defer conn.Close()
 
 	reply, err := redis.Bytes(conn.Do("HGET", key, field))
+	log.Print(reply, err)
 	if err != nil {
 		return nil, err
 	}

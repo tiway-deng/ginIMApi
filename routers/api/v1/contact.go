@@ -21,7 +21,7 @@ func ApplyUnreadNum(c *gin.Context) {
 	unreadNum, _ := cacheApplyFriend.GetApplyFriendUnRead(userId)
 	//返回数据
 	appG.Response(e.SUCCESS, map[string]interface{}{
-		"unread_num": unreadNum,
+		"unread_num": len(unreadNum),
 	})
 }
 
@@ -94,6 +94,14 @@ func UserContactApplyRecords(c *gin.Context)  {
 	userId := c.MustGet("user_id")
 
 	contactList := contactservice.GetUserContactApplyRecords(userId)
+	data := map[string]interface{}{
+		"rows":     contactList,
+		"page": 1,
+		"page_size":      100,
+		"page_total": len(contactList),
+		"total": len(contactList),
+	}
+
 	//返回数据
-	appG.Response(e.SUCCESS, contactList)
+	appG.Response(e.SUCCESS, data)
 }

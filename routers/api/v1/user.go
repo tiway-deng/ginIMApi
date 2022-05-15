@@ -2,6 +2,11 @@ package v1
 
 import (
 	//"ginIMApi/cache"
+	//"strconv"
+
+	"strconv"
+
+	//"ginIMApi/cache"
 	"ginIMApi/constants/e"
 	"ginIMApi/models"
 	"ginIMApi/packages/utils"
@@ -9,8 +14,6 @@ import (
 	"ginIMApi/validators"
 	"github.com/astaxie/beego/validation"
 	"github.com/gin-gonic/gin"
-	//"log"
-	//"strconv"
 )
 
 func GetUserDetail(c *gin.Context) {
@@ -18,7 +21,7 @@ func GetUserDetail(c *gin.Context) {
 	var form validators.UserSearch
 	c.Bind(&form)
 
-	//userId := c.MustGet("user_id")
+	userId := c.MustGet("user_id")
 
 	userInfo, err := models.GetUserByUserId(form.UserId)
 	if err != nil {
@@ -27,15 +30,21 @@ func GetUserDetail(c *gin.Context) {
 	}
 
 	//好友请求
-	//cacheApplyFriend := cache.NewApplyFriend()
-	//friendIdStr := strconv.Itoa(form.UserId)
-	//friendApply,error := cacheApplyFriend.GetApplyFriendUnRead(friendIdStr)
-	//log.Print(friendApply,error)
-	////好友状态
-	//user1, user2 := utils.GetUserSort(userId.(int), form.UserId)
-	//friendStatus := models.IsUserFriend(user1, user2)
-	//log.Print(friendStatus)
+	friendIdStr := strconv.Itoa(form.UserId)
+	friendApplyInfo := models.UserApplyRecordExist(userId,friendIdStr)
+	friendApply := 0
+	if friendApplyInfo {
+		friendApply = 1
+	}
 
+	//好友状态
+	userIdInt,_ :=strconv.Atoi(userId.(string))
+	user1, user2 := utils.GetUserSort(userIdInt, form.UserId)
+	isFriend := models.IsUserFriend(user1, user2)
+	friendStatus := 1
+	if isFriend {
+		friendStatus = 2
+	}
 
 	//返回数据
 	appG.Response(e.SUCCESS, map[string]interface{}{
@@ -46,8 +55,8 @@ func GetUserDetail(c *gin.Context) {
 		"motto":    userInfo.Motto,
 		"email":    userInfo.Email,
 		"gender":   userInfo.Gender,
-		"friend_apply":   1,
-		"friend_status":   1,
+		"friend_apply":   friendApply,
+		"friend_status":   friendStatus,
 	})
 
 }

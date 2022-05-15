@@ -53,10 +53,10 @@ func SearchUserContact(mobile string) models.User {
 	return userInfo
 }
 
-func GetUserContactApplyRecords(userId interface{}) []models.Contact {
+func GetUserContactApplyRecords(userId interface{}) []models.RecordResult {
 
 	//用户联系人信息
-	userContactList := models.GetUserContactList(userId)
+	userContactList := models.GetUserApply(userId)
 
 	return userContactList
 }
