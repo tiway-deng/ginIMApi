@@ -152,6 +152,8 @@ func read(c *websocket.Conn) {
 				}
 				//用户信息
 				userInfo, _ = models.GetUserByUserId(userId)
+				//更新聊天列表
+				models.UpsertChatItem(receiveId,int(userId),1)
 			}
 
 			//创建聊天记录
