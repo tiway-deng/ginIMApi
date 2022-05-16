@@ -1,7 +1,7 @@
 /*
  Navicat Premium Data Transfer
 
- Source Server         : local-docker
+ Source Server         : docker-localmysql
  Source Server Type    : MySQL
  Source Server Version : 80027
  Source Host           : localhost:3306
@@ -11,7 +11,7 @@
  Target Server Version : 80027
  File Encoding         : 65001
 
- Date: 22/02/2022 17:14:31
+ Date: 16/05/2022 17:47:46
 */
 
 SET NAMES utf8mb4;
@@ -119,7 +119,7 @@ CREATE TABLE `im_chat_records`  (
   `created_at` datetime(0) NULL DEFAULT NULL COMMENT '发送消息的时间',
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `idx_userid_receiveid`(`user_id`, `receive_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 9 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '用户聊天记录表' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 16 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '用户聊天记录表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of im_chat_records
@@ -131,10 +131,27 @@ INSERT INTO `im_chat_records` VALUES (4, 1, 1, 2, 1, '212', 0, '2022-01-10 18:34
 INSERT INTO `im_chat_records` VALUES (5, 1, 1, 2, 1, '223', 0, '2022-01-10 18:34:43');
 INSERT INTO `im_chat_records` VALUES (6, 1, 1, 1, 2, '2111', 0, '2022-01-10 18:34:53');
 INSERT INTO `im_chat_records` VALUES (7, 1, 1, 1, 2, '888', 0, '2022-01-10 18:34:55');
-INSERT INTO `im_chat_records` VALUES (8, 1, 5, 2, 1, NULL, 0, '2022-01-12 14:01:28');
-INSERT INTO `im_chat_records` VALUES (9, 1, 1, 2, 1, '121', 0, '2022-01-18 09:51:28');
-INSERT INTO `im_chat_records` VALUES (10, 1, 1, 1, 2, '11', 0, '2022-02-22 16:16:32');
-INSERT INTO `im_chat_records` VALUES (11, 1, 1, 1, 2, '343434', 0, '2022-02-22 16:16:43');
+INSERT INTO `im_chat_records` VALUES (8, 1, 1, 2, 1, '111', 0, '2022-05-15 11:58:29');
+INSERT INTO `im_chat_records` VALUES (9, 1, 1, 2, 1, '121212', 0, '2022-05-15 11:59:21');
+INSERT INTO `im_chat_records` VALUES (10, 1, 1, 2, 1, '1111', 0, '2022-05-15 12:04:37');
+INSERT INTO `im_chat_records` VALUES (11, 1, 1, 2, 1, '111', 0, '2022-05-15 12:04:52');
+INSERT INTO `im_chat_records` VALUES (12, 1, 1, 2, 1, '不是吧', 0, '2022-05-15 12:05:14');
+INSERT INTO `im_chat_records` VALUES (13, 1, 1, 2, 1, '我也想知道', 0, '2022-05-15 12:05:19');
+INSERT INTO `im_chat_records` VALUES (14, 1, 1, 2, 1, '不错', 0, '2022-05-15 12:05:50');
+INSERT INTO `im_chat_records` VALUES (15, 1, 1, 2, 1, 'qq', 0, '2022-05-15 12:06:05');
+INSERT INTO `im_chat_records` VALUES (16, 1, 1, 1, 2, '1111', 0, '2022-05-15 12:06:23');
+INSERT INTO `im_chat_records` VALUES (17, 1, 1, 1, 3, '1111', 0, '2022-05-16 12:59:29');
+INSERT INTO `im_chat_records` VALUES (18, 1, 1, 1, 3, '2121', 0, '2022-05-16 13:02:43');
+INSERT INTO `im_chat_records` VALUES (19, 1, 1, 1, 3, '111', 0, '2022-05-16 13:03:11');
+INSERT INTO `im_chat_records` VALUES (20, 1, 1, 1, 3, '11', 0, '2022-05-16 13:06:57');
+INSERT INTO `im_chat_records` VALUES (21, 1, 1, 3, 1, '1212', 0, '2022-05-16 13:08:32');
+INSERT INTO `im_chat_records` VALUES (22, 1, 1, 1, 3, '12121', 0, '2022-05-16 13:19:42');
+INSERT INTO `im_chat_records` VALUES (23, 1, 1, 3, 1, '111', 0, '2022-05-16 13:20:46');
+INSERT INTO `im_chat_records` VALUES (24, 1, 1, 1, 3, '1111', 0, '2022-05-16 13:29:05');
+INSERT INTO `im_chat_records` VALUES (25, 1, 1, 3, 1, '[微笑]', 0, '2022-05-16 13:39:16');
+INSERT INTO `im_chat_records` VALUES (26, 1, 1, 6, 3, '1212', 0, '2022-05-16 13:43:29');
+INSERT INTO `im_chat_records` VALUES (27, 1, 1, 3, 6, '[微笑]', 0, '2022-05-16 13:43:50');
+INSERT INTO `im_chat_records` VALUES (28, 1, 1, 6, 3, '1212', 0, '2022-05-16 13:46:31');
 
 -- ----------------------------
 -- Table structure for im_chat_records_code
@@ -149,12 +166,7 @@ CREATE TABLE `im_chat_records_code`  (
   `created_at` datetime(0) NULL DEFAULT NULL COMMENT '创建时间',
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `idx_recordid`(`record_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '用户聊天记录_代码块消息表' ROW_FORMAT = Dynamic;
-
--- ----------------------------
--- Records of im_chat_records_code
--- ----------------------------
-INSERT INTO `im_chat_records_code` VALUES (1, 8, 2, 'less', '545455225', '2022-01-12 14:01:28');
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '用户聊天记录_代码块消息表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table structure for im_chat_records_delete
@@ -391,27 +403,28 @@ CREATE TABLE `im_users`  (
   `motto` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '' COMMENT '用户座右铭',
   `email` varchar(30) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '' COMMENT '用户邮箱',
   `created_at` datetime(0) NULL DEFAULT NULL COMMENT '注册时间',
-  `status` tinyint(1) NULL DEFAULT NULL,
+  `status` tinyint(0) UNSIGNED NULL DEFAULT NULL,
   `updated_at` datetime(0) NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE INDEX `idx_mobile`(`mobile`) USING BTREE,
   UNIQUE INDEX `users_mobile_unique`(`mobile`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 4 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '用户信息表' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 6 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '用户信息表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of im_users
 -- ----------------------------
-INSERT INTO `im_users` VALUES (1, '13533333333', '13533333333', '', 0, 'e10adc3949ba59abbe56e057f20f883e', '', '', '2022-01-10 18:25:23', 1, '2022-01-18 09:49:10');
-INSERT INTO `im_users` VALUES (2, '13522222222', '13522222222', '', 0, 'e10adc3949ba59abbe56e057f20f883e', '', '', '2022-01-10 18:25:23', 1, '2022-01-18 09:49:31');
-INSERT INTO `im_users` VALUES (3, '13570081693', 'tiway', '', 0, 'e10adc3949ba59abbe56e057f20f883e', '', '', '2022-01-10 18:25:23', 1, '2022-01-18 09:49:31');
-INSERT INTO `im_users` VALUES (4, '13566696969', '13588', '', 0, '0192023a7bbd73250516f069df18b500', '', '', '2022-02-22 17:04:31', 0, NULL);
-INSERT INTO `im_users` VALUES (5, '18798272054', '18798272054', '', 0, '0192023a7bbd73250516f069df18b500', '', '', '2022-02-22 17:05:06', 1, NULL);
+INSERT INTO `im_users` VALUES (1, '13533333333', '13533333333', 'https://im.gzydong.club/public/media/image/avatar/20220126/4c874751ea11575c5ddbc6f6cf91db33_200x200.png', 0, 'e10adc3949ba59abbe56e057f20f883e', '', '', '2022-01-10 18:25:23', 1, '2022-02-08 10:54:04');
+INSERT INTO `im_users` VALUES (2, '13522222222', '13522222222', 'https://im.gzydong.club/public/media/image/avatar/20220126/4c874751ea11575c5ddbc6f6cf91db33_200x200.png', 0, 'e10adc3949ba59abbe56e057f20f883e', '', '', '2022-01-10 18:25:23', 1, '2022-02-08 10:54:04');
+INSERT INTO `im_users` VALUES (3, '13570081693', 'tiway', 'https://im.gzydong.club/public/media/image/avatar/20220126/4c874751ea11575c5ddbc6f6cf91db33_200x200.png', 0, 'e10adc3949ba59abbe56e057f20f883e', '', '', '2022-05-15 12:12:12', 1, NULL);
+INSERT INTO `im_users` VALUES (4, '13530467923', 'yy', 'https://im.gzydong.club/public/media/image/avatar/20220126/4c874751ea11575c5ddbc6f6cf91db33_200x200.png', 0, 'e10adc3949ba59abbe56e057f20f883e', '', '', '2022-05-15 12:20:55', 1, NULL);
+INSERT INTO `im_users` VALUES (5, '13566636363', '13566636363', 'https://im.gzydong.club/public/media/image/avatar/20220126/4c874751ea11575c5ddbc6f6cf91db33_200x200.png', 0, 'e10adc3949ba59abbe56e057f20f883e', '', '', '2022-05-15 12:22:37', 1, NULL);
+INSERT INTO `im_users` VALUES (6, '13599999999', 'tiantian', 'https://im.gzydong.club/public/media/image/avatar/20220126/4c874751ea11575c5ddbc6f6cf91db33_200x200.png', 0, 'e10adc3949ba59abbe56e057f20f883e', '', '', '2022-05-16 13:41:01', 1, NULL);
 
 -- ----------------------------
--- Table structure for im_users_chat_list
+-- Table structure for im_users_chat_lists
 -- ----------------------------
-DROP TABLE IF EXISTS `im_users_chat_list`;
-CREATE TABLE `im_users_chat_list`  (
+DROP TABLE IF EXISTS `im_users_chat_lists`;
+CREATE TABLE `im_users_chat_lists`  (
   `id` int(0) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '聊天列表ID',
   `type` tinyint(0) UNSIGNED NOT NULL DEFAULT 1 COMMENT '聊天类型[1:好友;2:群聊]',
   `uid` int(0) UNSIGNED NOT NULL DEFAULT 0 COMMENT '用户ID',
@@ -424,13 +437,17 @@ CREATE TABLE `im_users_chat_list`  (
   `updated_at` datetime(0) NULL DEFAULT NULL COMMENT '更新时间',
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `idx_uid_type_friend_id_group_id`(`uid`, `friend_id`, `group_id`, `type`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '用户聊天列表' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 9 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '用户聊天列表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
--- Records of im_users_chat_list
+-- Records of im_users_chat_lists
 -- ----------------------------
-INSERT INTO `im_users_chat_list` VALUES (1, 1, 2, 1, 0, 1, 1, 0, '2022-01-10 18:33:41', '2022-01-12 13:39:04');
-INSERT INTO `im_users_chat_list` VALUES (2, 1, 1, 2, 0, 1, 0, 0, '2022-01-10 18:33:50', '2022-01-10 18:33:50');
+INSERT INTO `im_users_chat_lists` VALUES (1, 1, 2, 1, 0, 1, 0, 0, '2022-01-10 18:33:41', '2022-01-10 18:34:11');
+INSERT INTO `im_users_chat_lists` VALUES (2, 1, 1, 2, 0, 1, 0, 0, '2022-01-10 18:33:50', '2022-01-10 18:33:50');
+INSERT INTO `im_users_chat_lists` VALUES (8, 1, 1, 3, 0, 1, 0, 0, '2022-05-16 13:03:34', '2022-05-16 13:39:16');
+INSERT INTO `im_users_chat_lists` VALUES (13, 1, 3, 1, 0, 1, 0, 0, '2022-05-16 13:29:05', '2022-05-16 13:29:05');
+INSERT INTO `im_users_chat_lists` VALUES (14, 1, 6, 3, 0, 1, 0, 0, '2022-05-16 13:43:23', '2022-05-16 13:43:50');
+INSERT INTO `im_users_chat_lists` VALUES (15, 1, 3, 6, 0, 1, 0, 0, '2022-05-16 13:43:29', '2022-05-16 13:46:31');
 
 -- ----------------------------
 -- Table structure for im_users_emoticon
@@ -462,18 +479,20 @@ CREATE TABLE `im_users_friends`  (
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `idx_user1_user2`(`user1`, `user2`) USING BTREE,
   INDEX `idx_user2_user1`(`user2`, `user1`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '用户好友关系表' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 6 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '用户好友关系表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of im_users_friends
 -- ----------------------------
 INSERT INTO `im_users_friends` VALUES (1, 1, 2, '13522222222', '4545', 1, 1, '2022-01-10 18:33:35', '2022-01-10 18:33:35');
+INSERT INTO `im_users_friends` VALUES (6, 1, 3, 'tiantian', '13533333333', 2, 1, '2022-05-16 12:59:08', '2022-05-16 12:59:08');
+INSERT INTO `im_users_friends` VALUES (7, 3, 6, 'tiantian', 'tiway', 2, 1, '2022-05-16 13:43:03', '2022-05-16 13:43:03');
 
 -- ----------------------------
--- Table structure for im_users_friends_apply
+-- Table structure for im_users_friends_applies
 -- ----------------------------
-DROP TABLE IF EXISTS `im_users_friends_apply`;
-CREATE TABLE `im_users_friends_apply`  (
+DROP TABLE IF EXISTS `im_users_friends_applies`;
+CREATE TABLE `im_users_friends_applies`  (
   `id` int(0) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '申请ID',
   `user_id` int(0) UNSIGNED NOT NULL DEFAULT 0 COMMENT '申请人ID',
   `friend_id` int(0) UNSIGNED NOT NULL DEFAULT 0 COMMENT '被申请人',
@@ -484,11 +503,13 @@ CREATE TABLE `im_users_friends_apply`  (
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `idx_user_id`(`user_id`) USING BTREE,
   INDEX `idx_friend_id`(`friend_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '用户添加好友申请表' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 5 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '用户添加好友申请表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
--- Records of im_users_friends_apply
+-- Records of im_users_friends_applies
 -- ----------------------------
-INSERT INTO `im_users_friends_apply` VALUES (1, 1, 2, 1, '4545', '2022-01-10 18:30:49', '2022-01-10 18:33:35');
+INSERT INTO `im_users_friends_applies` VALUES (1, 1, 2, 1, '4545', '2022-01-10 18:30:49', '2022-01-10 18:33:35');
+INSERT INTO `im_users_friends_applies` VALUES (4, 3, 1, 1, '135', '2022-05-16 12:43:21', '2022-05-16 12:59:08');
+INSERT INTO `im_users_friends_applies` VALUES (5, 6, 3, 1, 'tiway', '2022-05-16 13:41:38', '2022-05-16 13:43:03');
 
 SET FOREIGN_KEY_CHECKS = 1;
