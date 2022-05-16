@@ -15,10 +15,10 @@ type UsersChatList struct {
 	Status     int       `json:"status"`
 	IsTop      int       `json:"is_top"`
 	NotDisturb int       `json:"not_disturb"`
-	DeletedAt  time.Time `gorm:"default:0",json:"deleted_at"`
+	UpdatedAt  time.Time `gorm:"default:0",json:"updated_at"`
 }
 
-type ChatListInfo struct {
+type UsersChatListDetail struct {
 	ID          uint      `json:"id"`
 	Type        int       `json:"type"`
 	FriendId    int       `json:"friend_id"`
@@ -35,11 +35,11 @@ type ChatListInfo struct {
 }
 
 //get user chat list
-func GetUserChatList(uid string, offset int) []ChatListInfo {
-	var results []ChatListInfo
+func GetUserChatList(uid string, offset int) []UsersChatListDetail {
+	var results []UsersChatListDetail
 
 	tablePrefix := setting.DatabaseSetting.TablePrefix
-	db.Table(tablePrefix+"users_chat_list as list").
+	db.Table(tablePrefix+"users_chat_lists as list").
 		Select(
 			"list.id,list.type,list.friend_id,list.group_id,list.updated_at,list.not_disturb,list.is_top,"+
 				"u.id as user_id,u.avatar as user_avatar,u.nickname,u.status as user_status,"+
@@ -56,3 +56,34 @@ func GetUserChatList(uid string, offset int) []ChatListInfo {
 
 	return results
 }
+
+func GetChatItem(userId int, receiveId int, chatType int) (chatItem UsersChatList) {
+
+	db.Table("im_users_chat_lists").Where("uid = ? AND type = ? AND friend_id = ?",userId,chatType,receiveId).First(&chatItem)
+
+	return chatItem
+}
+
+func UpsertChatItem(userId int,receiveId int,chatType int) map[string]interface{}{
+	chatItem := GetChatItem(userId,receiveId,chatType)
+	if chatItem.ID == 0 {
+		chatItem.Type = chatType
+		chatItem.Uid = userId
+		chatItem.Status = 1
+		chatItem.FriendId = receiveId
+		chatItem.GroupId = 0
+		chatItem.CreatedAt = time.Now()
+	}
+	chatItem.Status = 1
+	chatItem.UpdatedAt = time.Now()
+	log.Println(chatItem)
+	db.Save(&chatItem)
+
+	return map[string]interface{}{
+		"id":chatItem.ID,
+		"type":chatItem.Type,
+		"friend_id":chatItem.FriendId,
+		"group_id":chatItem.GroupId,
+	}
+}
+

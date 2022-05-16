@@ -2,6 +2,7 @@ package v1
 
 import (
 	"ginIMApi/constants/e"
+	"ginIMApi/models"
 	"ginIMApi/packages/utils"
 	"ginIMApi/services/talkservice"
 	"ginIMApi/services/userservice"
@@ -24,18 +25,28 @@ func List(c *gin.Context) {
 func Create(c *gin.Context) {
 	appG := utils.Gin{C: c}
 	//参数验证
-	var form validators.User
-	c.Bind(&form)
-	valid := validation.Validation{}
-	check, _ := valid.Valid(form)
-	if !check {
-		utils.MarkErrors(valid.Errors)
-		appG.Response(e.INVALID_PARAMS, nil)
-		return
+	json := make(utils.JsonStruct)
+	c.BindJSON(&json)
+
+	userId := c.MustGet("user_id")
+
+	if json["type"] == 1 {
+		userIdInt,_ :=strconv.Atoi(userId.(string))
+		user1, user2 := utils.GetUserSort(userIdInt, int(json["receive_id"].(float64)))
+		isFriend := models.IsUserFriend(user1,user2)
+		if !isFriend {
+			appG.Response(e.ERROR, "你们还不是好友")
+		}
 	}
+	//添加聊天列表
+	userIdInt,_ := strconv.Atoi(userId.(string))
+	receiveId,_ := strconv.Atoi(json["receive_id"].(string))
+	result :=models.UpsertChatItem(userIdInt,receiveId,int(json["type"].(float64)))
 
 	//返回数据
-	appG.Response(e.SUCCESS, nil)
+	appG.Response(e.SUCCESS, map[string]interface{}{
+		"talkItem":result,
+	})
 }
 
 func UpdateUnreadNum(c *gin.Context) {
